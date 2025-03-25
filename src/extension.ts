@@ -10,12 +10,8 @@ import setupServer from "./server.js";
 export async function activate(context: vscode.ExtensionContext) {
   console.log("activatee mcp extension");
 
-  const server = new McpServer({
-    name: "ping",
-    version: "1.0.0",
-  });
 
-  setupServer(server);
+  const server = setupServer();
 
   const app = express();
 
