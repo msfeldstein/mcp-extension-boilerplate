@@ -13,4 +13,6 @@ export default function setupServer() {
   server.tool("echo", { message: z.string() }, async ({ message }) => ({
     content: [{ type: "text", text: "you said " + message }],
   }));
+
+  return server
 }
