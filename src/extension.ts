@@ -3,20 +3,19 @@
 import * as vscode from "vscode";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { SSEServerTransport } from "@modelcontextprotocol/sdk/server/sse.js";
-import { z } from "zod";
 import express from "express";
 import { findAvailablePort } from "./utils.js";
+import setupServer from "./server.js";
 
 export async function activate(context: vscode.ExtensionContext) {
-  console.log("hello from the extension BEGIN");
+  console.log("activatee mcp extension");
+
   const server = new McpServer({
     name: "ping",
     version: "1.0.0",
   });
 
-  server.tool("echo", { message: z.string() }, async ({ message }) => ({
-    content: [{ type: "text", text: "you said " + message }],
-  }));
+  setupServer(server);
 
   const app = express();
 
@@ -35,7 +34,11 @@ export async function activate(context: vscode.ExtensionContext) {
 
   const port = await findAvailablePort(3000);
   app.listen(port);
+  console.log(`MCP Server is running on port ${port}`);
+  vscode.cursor.mcp.registerServer("ping", `http://localhost:${port}/sse`);
   vscode.window.showInformationMessage(`MCP Server is running on port ${port}`);
 }
 
-export function deactivate() {}
+export function deactivate() {
+  vscode.cursor.mcp.unregisterServer("ping");
+}

@@ -1,53 +1,37 @@
-# mcp-extension README
+# MCP Extension
 
-This is the README for your extension "mcp-extension". After writing up a brief description, we recommend including the following sections.
+A VS Code extension for Model Context Protocol integration.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
-
-For example if there is an image subfolder under your extension project workspace:
-
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+This extension provides integration with the Model Context Protocol (MCP), enabling enhanced AI-assisted development capabilities within VS Code.
 
 ## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+- VS Code 1.98.0 or higher
+
+## Installation
+
+You can install this extension by:
+1. Download the `.vsix` file
+2. Open VS Code
+3. Go to the Extensions view (`Ctrl+Shift+X` or `Cmd+Shift+X`)
+4. Click on the "..." menu in the top-right of the Extensions view
+5. Select "Install from VSIX..." and choose the downloaded file
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+Currently, this extension does not add any configurable settings.
 
-For example:
+## Release Notes
 
-This extension contributes the following settings:
+### 0.0.1
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+Initial release of the MCP extension with basic functionality
 
 ## Known Issues
 
 Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
 
 ## Following extension guidelines
 
