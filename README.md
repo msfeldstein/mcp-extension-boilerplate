@@ -1,7 +1,7 @@
-# MCP Extension
+# MCP Extension Boilerplate
 
-Boilerplate extension for setting up an MCP server via extension install.
+Ship your MCP servers as a Cursor Extension
 
-Configure your MCP server in [src/server.ts](src/server.ts), package, deploy
+Configure your MCP server in [src/server.ts](src/server.ts)
 
 Cursor does the rest

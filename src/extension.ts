@@ -7,6 +7,7 @@ import express from "express";
 import { findAvailablePort } from "./utils.js";
 import setupServer from "./server.js";
 
+console.log("LOADED A FILE EVEN");
 export async function activate(context: vscode.ExtensionContext) {
   console.log("activatee mcp extension");
 
@@ -18,8 +19,24 @@ export async function activate(context: vscode.ExtensionContext) {
   let transport: SSEServerTransport | null = null;
 
   app.get("/sse", (req, res) => {
+    // Configure headers to prevent timeout
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Connection', 'keep-alive');
+    res.setHeader('X-Accel-Buffering', 'no');
+    
     transport = new SSEServerTransport("/messages", res);
     server.connect(transport);
+    
+    // Send a heartbeat every 30 seconds
+    const heartbeat = setInterval(() => {
+      res.write('event: heartbeat\ndata: ping\n\n');
+    }, 30000);
+    
+    // Clean up on connection close
+    req.on('close', () => {
+      clearInterval(heartbeat);
+      transport = null;
+    });
   });
 
   app.post("/messages", (req, res) => {

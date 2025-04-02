@@ -1,4 +1,4 @@
-# Welcome to your VS Code Extension
+# Welcome to your MCP Cursor Extension
 
 ## What's in the folder
 
