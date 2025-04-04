@@ -11,8 +11,7 @@ console.log("LOADED A FILE EVEN");
 export async function activate(context: vscode.ExtensionContext) {
   console.log("activatee mcp extension");
 
-
-  const server = setupServer();
+  const mcpServer = setupServer();
 
   const app = express();
 
@@ -20,20 +19,20 @@ export async function activate(context: vscode.ExtensionContext) {
 
   app.get("/sse", (req, res) => {
     // Configure headers to prevent timeout
-    res.setHeader('Cache-Control', 'no-cache');
-    res.setHeader('Connection', 'keep-alive');
-    res.setHeader('X-Accel-Buffering', 'no');
-    
+    res.setHeader("Cache-Control", "no-cache");
+    res.setHeader("Connection", "keep-alive");
+    res.setHeader("X-Accel-Buffering", "no");
+
     transport = new SSEServerTransport("/messages", res);
-    server.connect(transport);
-    
+    mcpServer.connect(transport);
+
     // Send a heartbeat every 30 seconds
     const heartbeat = setInterval(() => {
-      res.write('event: heartbeat\ndata: ping\n\n');
+      res.write("event: heartbeat\ndata: ping\n\n");
     }, 30000);
-    
+
     // Clean up on connection close
-    req.on('close', () => {
+    req.on("close", () => {
       clearInterval(heartbeat);
       transport = null;
     });
@@ -44,12 +43,19 @@ export async function activate(context: vscode.ExtensionContext) {
       transport.handlePostMessage(req, res);
     }
   });
+  vscode.window.showInformationMessage("MCP Server about to start");
 
-  const port = await findAvailablePort(3000);
-  app.listen(port);
-  console.log(`MCP Server is running on port ${port}`);
-  vscode.cursor.mcp.registerServer("ping", `http://localhost:${port}/sse`);
-  vscode.window.showInformationMessage(`MCP Server is running on port ${port}`);
+  const expressServer = app.listen(0, () => {
+    const address = expressServer.address();
+    if (address && typeof address === "object") {
+      const port = address.port;
+      console.log(`MCP Server is running on port ${port}`);
+      vscode.cursor.mcp.registerServer("ping", `http://localhost:${port}/sse`);
+      vscode.window.showInformationMessage(
+        `MCP Server is running on port ${port}`
+      );
+    }
+  });
 }
 
 export function deactivate() {
